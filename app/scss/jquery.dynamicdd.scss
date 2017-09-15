@@ -1,0 +1,89 @@
+// Colors
+// ============================================
+$base-color 	: #d7d7d7;
+$caret-width	: 32px;
+
+
+
+.dynamicdd-wrapper {
+	border: 0;
+	display: inline-block !important;
+	padding: 0 !important;
+	position: relative;
+	&:after {
+		content: '';
+		clear: both;
+		display: block;
+	}
+}
+
+.dynamicdd {
+	ccursor: pointer;
+	right: 0;
+	width: 100%;
+	position: absolute;
+	& &-hide {
+		display: none;
+	}
+	& &-mask {
+		border: 1px solid $base-color;
+		display: inline-block !important;
+		height: 100%;
+		position: initial !important;
+		width: 100%;
+		.dynamicd-mask-selected {
+			width: 100%;
+		    white-space: nowrap;
+		    text-overflow: ellipsis;
+		    overflow: hidden;
+		    & > .dynamicdd-caret {
+			    font-size: small;	
+				width: $caret-width;
+				text-align: center;
+				display: inline;
+		    }
+		    & > span {
+		    	font-size: small;
+				width: calc(100% - #{$caret-width});
+				display: inline !important;
+		    }
+		}
+	}
+	& &-mask-list {
+		display: none;
+		position: absolute;
+		left: 0;
+		right: 0;
+		z-index: 10;
+		max-height: 260px;
+		background: white;
+		overflow-y: auto;
+		border: 1px solid $base-color;
+		&.open {
+			display: block;
+		}
+		&>li, .group-list>li {
+			border-top: 1px solid $base-color;		
+			padding: 5px 10px;
+			font-size: small;
+			width: 100%;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		&>li {
+			&:first-child {
+				border: none;
+			}
+			&.disabled, &.group {
+				color: #cccccc;
+			}
+		}
+		& li:not(.disabled):not(.group):hover {
+			background: #eeeeee;
+		}
+		.group-list>li {
+			text-indent: 10px;
+		}
+	}
+}
