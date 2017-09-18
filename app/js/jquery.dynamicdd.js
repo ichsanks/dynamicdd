@@ -41,16 +41,25 @@
             	});
             	return result;
             },
-            getAncestor = function(data, childId) {
-                var result = [];
-                $.each(data, function(key, val) {
-                    if(val.id == childId) {
-                        result.push(id);                        
-                    }
-                });
-                if(result.length > 0){
-                    return result;
+            getAncestor = function(data, childId) {                       
+                if(!Array.isArray(selector)) {
+                    selector = [selector];
                 }
+
+                $.each(data, function(key, val) {
+                    if(val === undefined) {
+                        return false;
+                    } else if(val.id == selector[0]) {
+                        if(val.parentID == 0) {
+                            return false;
+                        }
+                        selector.unshift(parseInt(val.parentID));                        
+                        getAncestor(data, selector);
+                        return selector;
+                    }
+                    return selector;
+                });
+                return selector;
             },
             getChildren = function(data, parentId) {
             	var result = [];
@@ -162,7 +171,7 @@
                     }
                     if($select.data('selected')) {
                         $wrapper
-                            .data('selected', $select.data('selected'));
+                            .data('selected', getAncestor($wrapper.data('list'), $select.data('selected'))); 
                     }
                 }                
 
@@ -239,6 +248,10 @@
 
                         changed($select, $customSelect);
                 		renderList($select);
+
+                        if($wrapper.data('selected') && index < $wrapper.data('selected').length) {
+                            $select.val($wrapper.data('selected')[index]).trigger('change');
+                        }
                         
                     })
                     .on('change.customSelect', function () {  
@@ -260,7 +273,7 @@
                         var $maskList = $(this).find('.dynamicdd-mask-list'),
                             maskBottom = $customSelect.offset().top + $maskList.outerHeight() + $(this).outerHeight(),
                             viewportHeight = window.innerHeight,
-                            maskPosition = '33px';
+                            maskPosition = $customSelect.outerHeight()-1;
                         
                         if(maskBottom >= viewportHeight) {
                             maskPosition = 1-($maskList.outerHeight())+'px';
