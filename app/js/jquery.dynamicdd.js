@@ -41,7 +41,7 @@
             	});
             	return result;
             },
-            getAncestor = function(data, childId) {                       
+            getAncestor = function(data, selector) {                       
                 if(!Array.isArray(selector)) {
                     selector = [selector];
                 }
@@ -295,6 +295,7 @@
                         if($selectedList.hasClass('group') || $selectedList.hasClass('disabled')) {
                             return false;
                         }
+                        $wrapper.removeData('selected');
                         $select.val($selectedList.data('value'));
                                   
                         $select.trigger('change');
